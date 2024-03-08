@@ -1,7 +1,5 @@
 package com.example.taskmanager.users.dtos;
 
-import com.example.taskmanager.users.models.Role;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

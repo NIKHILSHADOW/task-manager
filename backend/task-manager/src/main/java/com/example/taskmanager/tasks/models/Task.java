@@ -2,12 +2,16 @@ package com.example.taskmanager.tasks.models;
 
 import java.util.Date;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class Task {
 
 	@Id
@@ -26,18 +31,20 @@ public class Task {
 	
 	private String description;
 	
-	private String dueDate;
+	private Date dueDate;
 	
 	private Level level;
 	
 	private Integer priority;
 	
+	@CreationTimestamp
 	private Date createdTime;
 	
+	@UpdateTimestamp
 	private Date updatedTime;
 	
-	//
 	private Integer createdByUserWithId;
+	
 	
 	private Integer assignedToUserWithId;
 }
