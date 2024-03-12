@@ -2,6 +2,8 @@ package com.example.taskmanager.tasks.dtos;
 
 import java.util.Date;
 
+import com.example.taskmanager.users.models.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +14,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class TaskResponse {
+	
+	private Integer id;
 
 	private String name;
 	

@@ -1,8 +1,10 @@
 package com.example.taskmanager.tasks.services;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import com.example.taskmanager.tasks.dtos.TaskRequest;
@@ -10,23 +12,25 @@ import com.example.taskmanager.tasks.dtos.TaskResponse;
 import com.example.taskmanager.tasks.models.Level;
 import com.example.taskmanager.tasks.models.Task;
 import com.example.taskmanager.tasks.repositories.TaskRepository;
+import com.example.taskmanager.users.repositories.UserRepository;
 
 @Service
 public class TaskService {
 	
 	@Autowired TaskRepository taskRepository;
 	@Autowired TaskConverterService taskConverterService;
+	@Autowired UserRepository userRepository;
 
-	public List<TaskResponse> getAllTasks() {
+	public List<TaskResponse> getAllTasks(Principal principal) {
 		
 		return taskRepository
-				.findAll()
+				.findAllByUserName(principal.getName())
 				.stream()
 				.map(task -> taskConverterService.toTaskResponse(task))
 				.toList();
 	}
 
-	public TaskResponse addTask(TaskRequest taskRequest) {
+	public TaskResponse addTask(TaskRequest taskRequest, Principal principal) {
 		
 		Level level = Level.EASY;
 		
@@ -37,8 +41,16 @@ public class TaskService {
 		}
 		
 		//add principal
+		System.out.println("task controller " + principal.getName());
+		
+		com.example.taskmanager.users.models.User user1 = userRepository
+							.findByName(principal.getName())
+							.get();
+		
+		System.out.println(user1.getName());
+		
 		Task task = taskConverterService
-						.toTask(taskRequest, null, level);
+						.toTask(taskRequest, user1, level);
 		
 		Task task2 = taskRepository.save(task);
 		

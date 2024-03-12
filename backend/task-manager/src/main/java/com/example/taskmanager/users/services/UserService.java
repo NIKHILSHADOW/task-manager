@@ -2,6 +2,7 @@ package com.example.taskmanager.users.services;
 
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.taskmanager.users.dtos.UserRequest;
@@ -17,6 +18,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final UserConverterService userConverterService;
+	private final PasswordEncoder passwordEncoder;
 	
 	public List<UserResponse> getAllUsers() {
 		return userRepository
@@ -28,7 +30,7 @@ public class UserService {
 
 	public UserResponse addUser(UserRequest userRequest) {
 		// TODO Auto-generated method stub
-		
+		userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 		User user = userRepository.save(userConverterService.toUser(userRequest));
 		
 		return userConverterService

@@ -1,5 +1,6 @@
 package com.example.taskmanager.users.services;
 
+import org.jboss.jandex.TypeTarget.Usage;
 import org.springframework.stereotype.Service;
 
 import com.example.taskmanager.users.dtos.UserRequest;
@@ -25,7 +26,7 @@ public class UserConverterService {
 						null,
 						userRequest.getName(),
 						userRequest.getPassword(),
-						role
+						role,null
 						);
 	}
 	
@@ -34,6 +35,7 @@ public class UserConverterService {
 				.builder()
 				.id(user.getId())
 				.name(user.getName())
+				.role(user.getRole())
 				.build();
 	}
 }

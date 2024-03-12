@@ -3,6 +3,8 @@ package com.example.taskmanager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -18,16 +20,13 @@ public class TaskManagerApplication {
 	}
 	
 	@Bean
-	public User createAdmin(UserRepository userRepository) {
-		User user = new User(1,"admin","admin",Role.ADMIN);
+	public User createAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+		User user = new User(1,"admin",passwordEncoder.encode("admin"),Role.ADMIN,null);
 		User user2 = userRepository.save(user);
 		
 		return user2;
 	}
 	
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+	
 
 }
