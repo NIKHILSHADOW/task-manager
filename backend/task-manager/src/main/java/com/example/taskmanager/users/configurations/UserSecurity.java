@@ -27,6 +27,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import com.example.taskmanager.users.customauth.UserDbService;
+import com.example.taskmanager.users.jwt.JwtFilter;
 
 @EnableWebSecurity
 @Configuration
@@ -48,13 +49,14 @@ public class UserSecurity {
 	}
 	
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, CorsFilter corsFilter) throws Exception {
+	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, CorsFilter corsFilter, JwtFilter jwtFilter) throws Exception {
 		
 		httpSecurity
 			.csrf(csrf -> csrf.disable())
 			.cors(cors -> cors.disable())
 			.authorizeHttpRequests(auth ->auth.anyRequest().authenticated())
 			.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 			.authenticationProvider(authenticationProvider())
 			.formLogin(
 					formLogin 
